@@ -1,0 +1,15 @@
+cachetools==5.3.2 
+chardet==5.2.0 
+colorama==0.4.6 
+distlib==0.3.8 
+filelock==3.13.1 
+iniconfig==2.0.0 
+mccabe==0.7.0
+packaging==23.2 
+platformdirs==4.2.0 
+pluggy==1.4.0 
+pycodestyle==2.11.1 
+pyflakes==3.2.0 
+pyproject-api==1.6.1 
+typing-extensions==4.9.0 
+virtualenv==20.25.0 
