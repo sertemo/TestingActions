@@ -1,6 +1,6 @@
 import enum
 from dataclasses import dataclass
-from typing import List, Union
+from typing import List, Union, Dict
 
 COLLECTION = 'usuarios'
 
@@ -30,7 +30,7 @@ class User:
 class DataBase:
     def __init__(self, uri: str) -> None:
         self.URI = uri
-        self.db: dict[str, List[User]] = {}
+        self.db: Dict[str, List[User]] = {}
 
     def create_collection(self, collection: str) -> None:
         if collection not in self.db:
@@ -64,7 +64,7 @@ def inactivate_user(
         db_conn: DataBase,
         collection: str,
         username: str
-        ) -> Union[dict[str, Union[str, int, UserState]], None]:
+        ) -> Union[Dict[str, Union[str, int, UserState]], None]:
     user = db_conn.find_one(username, collection)
     if user is not None:
         user.state = UserState.inactive
@@ -76,7 +76,7 @@ def activate_user(
         db_conn: DataBase,
         collection: str,
         username: str
-        ) -> Union[dict[str, Union[str, int, UserState]], None]:
+        ) -> Union[Dict[str, Union[str, int, UserState]], None]:
     user = db_conn.find_one(username, collection)
     if user is not None:
         user.state = UserState.active
@@ -88,7 +88,7 @@ def block_user(
         db_conn: DataBase,
         collection: str,
         username: str
-        ) -> Union[dict[str, Union[str, int, UserState]], None]:
+        ) -> Union[Dict[str, Union[str, int, UserState]], None]:
     user = db_conn.find_one(username.lower(), collection)
     if user is not None:
         user.state = UserState.blocked
@@ -103,7 +103,7 @@ def create_user(
         *,
         db_conn: DataBase,
         collection: str
-        ) -> Union[dict[str, Union[str, int, UserState]], None]:
+        ) -> Union[Dict[str, Union[str, int, UserState]], None]:
     """Crea un usuario dandolo
     de alta en base de datos
 
