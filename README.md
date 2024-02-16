@@ -1,4 +1,7 @@
 # TestingActions
+
+![Tests](https://github.com/sertemo/TestingActions/actions/workflows/tests.yml/badge.svg)
+
 ## Pequeño proyecto para probar las GitHub Actions
 Automatización de testing con pytest, Flake8 y mypy y tox
 
