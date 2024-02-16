@@ -1,5 +1,6 @@
 import enum
 from dataclasses import dataclass
+from typing import List
 
 COLLECTION = 'usuarios'
 
@@ -29,7 +30,7 @@ class User:
 class DataBase:
     def __init__(self, uri: str) -> None:
         self.URI = uri
-        self.db: dict[str, list[User]] = {}
+        self.db: dict[str, List[User]] = {}
 
     def create_collection(self, collection: str) -> None:
         if collection not in self.db:
@@ -43,7 +44,7 @@ class DataBase:
             Debes crearla primero con create_collection()")
         self.db[collection].append(user)
 
-    def get_users(self, collection: str) -> list[User]:
+    def get_users(self, collection: str) -> List[User]:
         if collection not in self.db:
             raise AttributeError(f"La colección {collection} no existe. \
             Debes crearla primero con create_collection()")
