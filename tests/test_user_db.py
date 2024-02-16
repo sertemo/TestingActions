@@ -1,5 +1,6 @@
 from testingactions.user_db import (create_user, 
-                                    PasswordTooShort,
+                                    PasswordTooShortError,
+                                    InvalidUsernameError,
                                     block_user,
                                     UserState,
                                     activate_user,
@@ -9,17 +10,17 @@ import pytest
 
 
 def test_create_user_invalid_password_too_short(db_conn):
-    with pytest.raises(PasswordTooShort):
+    with pytest.raises(PasswordTooShortError):
         create_user('Pedro', 51, '234', db_conn=db_conn, collection='usuarios')
 
 
 def test_create_user_two_words_username(db_conn):
-    with pytest.raises(ValueError):
+    with pytest.raises(InvalidUsernameError):
         create_user('Juan Rodriguez', 43, '1223', db_conn=db_conn, collection='usuarios')
 
 
 def test_create_user_already_exist(db_conn):
-    with pytest.raises(ValueError):
+    with pytest.raises(InvalidUsernameError):
         create_user('pedro', 51, '23480322', db_conn=db_conn, collection='usuarios')
         create_user('Pedro', 44, '2345', db_conn=db_conn, collection='usuarios')
 

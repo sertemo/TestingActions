@@ -1,4 +1,5 @@
 # Archivo para las fixtures
+# Las fixtures que están aqui se comparten para todos los tests
 from testingactions.user_db import DataBase
 import pytest
 

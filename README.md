@@ -28,7 +28,7 @@ flake8 src
 mypy src
 ```
 
-# Cómo sabemos que los tests también pasarán en otros entornos virtuales ?
+## Cómo sabemos que los tests también pasarán en otros entornos virtuales ?
 Usamos [**Tox**](https://tox.wiki/en/4.12.1/config.html)
 
 Archivo de  configuración **tox.ini**
@@ -36,3 +36,9 @@ Archivo de  configuración **tox.ini**
 ```sh
 tox -v # Para verbose
 ```
+
+## Configuramos GitHub Actions
+Lanzamos **tox** cada vez que se ejecute un push en la rama main del repositorio.
+Configuramos github actions con un fichero **.yml** dentro de **.github/workflows**
+
+Tenemos que añadir a tox.ini sección [gh-actions]

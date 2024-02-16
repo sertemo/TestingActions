@@ -4,7 +4,11 @@ from dataclasses import dataclass
 COLLECTION = 'usuarios'
 
 
-class PasswordTooShort(Exception):
+class PasswordTooShortError(Exception):
+    pass
+
+
+class InvalidUsernameError(Exception):
     pass
 
 
@@ -99,24 +103,69 @@ def create_user(
         db_conn: DataBase,
         collection: str
         ) -> dict[str, str | int | UserState]:
+    """Crea un usuario dandolo
+    de alta en base de datos
+
+    Parameters
+    ----------
+    username : str
+        _description_
+    edad : int
+        _description_
+    password : str
+        _description_
+    db_conn : DataBase
+        _description_
+    collection : str
+        _description_
+
+    Returns
+    -------
+    dict[str, str | int | UserState]
+        _description_
+
+    Raises
+    ------
+    InvalidUsernameError
+        Si el usuario ya existe
+    PasswordTooShort
+        Si la pass tiene menos
+        de 4 caracteres
+    InvalidUsernameError
+        Si el usuario son mas de 1 palabra
+    """
     if user_already_exists(
                             username, db_conn, collection):
-        raise ValueError(
+        raise InvalidUsernameError(
                         f"El usuario {username} ya existe \
                         en la colección {collection}")
     if not is_valid_password(password):
-        raise PasswordTooShort(
+        raise PasswordTooShortError(
                         "El password no es válido. \
                         Debe tener al menos 4 dígitos.")
-    if not username_is_not_one_word(username):
-        raise ValueError("El username no puede contener espacios")
+    if not username_is_one_word(username):
+        raise InvalidUsernameError("El username no puede contener espacios")
     user = User(username.lower(), edad, password)
     db_conn.add(user, collection)
     return user.__dict__
 
 
 # Validaciones
-def username_is_not_one_word(username: str) -> bool:
+def username_is_one_word(username: str) -> bool:
+    """Verifica que el username solo tenga
+    1 palabra.
+
+    Parameters
+    ----------
+    username : str
+        _description_
+
+    Returns
+    -------
+    bool
+        True si es válido,
+        False en caso contrario
+    """
     return len(username.split()) == 1
 
 
@@ -124,6 +173,22 @@ def user_already_exists(
         username: str,
         db_conn: DataBase,
         collection: str) -> bool:
+    """Verifica si el usuario ya existe en BBDD
+
+    Parameters
+    ----------
+    username : str
+        _description_
+    db_conn : DataBase
+        _description_
+    collection : str
+        _description_
+
+    Returns
+    -------
+    bool
+        True si existe, False si no existe
+    """
     if db_conn.find_one(username.lower(), collection):
         return True
     else:
@@ -131,6 +196,20 @@ def user_already_exists(
 
 
 def is_valid_password(password: str) -> bool:
+    """Verifica que el password
+    tenga más de 4 caracteres
+
+    Parameters
+    ----------
+    password : str
+        _description_
+
+    Returns
+    -------
+    bool
+        True si el pass es válido,
+        False si no es válido
+    """
     return len(password) >= 4
 
 
