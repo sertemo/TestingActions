@@ -1,6 +1,6 @@
 import enum
 from dataclasses import dataclass
-from typing import List
+from typing import List, Union
 
 COLLECTION = 'usuarios'
 
@@ -50,7 +50,7 @@ class DataBase:
             Debes crearla primero con create_collection()")
         return self.db[collection]
 
-    def find_one(self, username: str, collection: str) -> User | None:
+    def find_one(self, username: str, collection: str) -> Union[User, None]:
         if collection not in self.db:
             raise AttributeError(f"La colección {collection} no existe. \
             Debes crearla primero con create_collection()")
@@ -64,7 +64,7 @@ def inactivate_user(
         db_conn: DataBase,
         collection: str,
         username: str
-        ) -> dict[str, str | int | UserState] | None:
+        ) -> Union[dict[str, Union[str, int, UserState]], None]:
     user = db_conn.find_one(username, collection)
     if user is not None:
         user.state = UserState.inactive
@@ -76,7 +76,7 @@ def activate_user(
         db_conn: DataBase,
         collection: str,
         username: str
-        ) -> dict[str, str | int | UserState] | None:
+        ) -> Union[dict[str, Union[str, int, UserState]], None]:
     user = db_conn.find_one(username, collection)
     if user is not None:
         user.state = UserState.active
@@ -88,7 +88,7 @@ def block_user(
         db_conn: DataBase,
         collection: str,
         username: str
-        ) -> dict[str, str | int | UserState] | None:
+        ) -> Union[dict[str, Union[str, int, UserState]], None]:
     user = db_conn.find_one(username.lower(), collection)
     if user is not None:
         user.state = UserState.blocked
@@ -103,7 +103,7 @@ def create_user(
         *,
         db_conn: DataBase,
         collection: str
-        ) -> dict[str, str | int | UserState]:
+        ) -> Union[dict[str, Union[str, int, UserState]], None]:
     """Crea un usuario dandolo
     de alta en base de datos
 
